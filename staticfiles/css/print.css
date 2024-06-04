@@ -1,0 +1,29 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    position: relative;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    background-image: url(img/diplom.jpg);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+
+.daraja {
+    position: absolute;
+    left: 9%;
+    top: 13%;
+    font-size: 60px;
+}
+
+.name {
+    position: absolute;
+    left: 32%;
+    top: 51%;
+    font-size: 60px;
+}

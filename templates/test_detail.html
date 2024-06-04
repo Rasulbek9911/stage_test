@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <title>test</title>
+  <link rel="stylesheet" href="{% static 'css/test.css' %}">
+</head>
+
+<body>
+  {% for question in questions %}
+  <div class="test_common">
+    <input type="hidden" id="question_id" value="{{question.id}}">
+    <input type="hidden" id="stage_id" value="{{question.stage.id}}">
+    <input id="csrf_token" value="{{csrf_token}}" disabled hidden>
+    <p class="test_savol">{{forloop.counter}}. {{ question.text }}</p>
+    {% for ans in question.answers.all %}
+    <div class="option">
+      <label for="test{{ans.id}}" class="answer label_test{{forloop.counter}}">
+        <span> {{ans.text}}</span>
+        <input type="radio" id="test{{ans.id}}" class="test{{forloop.counter}}" name="test{{question.id}}" />
+      </label>
+    </div>
+    {% endfor %}
+  </div>
+  {% endfor %}
+
+  <input type="submit" id='send' value="yuborish">
+</body>
+
+</html>
+<script>
+  $(document).ready(function () {
+    $('#send').click(function () {
+      var stage_id = null
+      savollar_soni = $('div.test_common')
+      const answers = [];
+      for (let i = 0; i < savollar_soni.length; i++) {
+        const question_id = savollar_soni[i].querySelector("#question_id").value;
+        stage_id = savollar_soni[i].querySelector("#stage_id").value;
+        console.log(stage_id);
+        for (let j = 0; j < savollar_soni[i].querySelectorAll('div.option').length; j++) {
+          if (savollar_soni[i].querySelectorAll('div.option')[j].querySelector(`input.test${j + 1}`).checked) {
+            const answer = savollar_soni[i].querySelectorAll('div.option')[j].querySelector(`label.label_test${j + 1}`).innerText
+            answers.push({ question_id: question_id, answer: answer })
+          }
+        }
+      }
+      $.ajax({
+        url: '/check_stage_test/',
+        type: 'post',
+        data: JSON.stringify({
+          "answers": answers,
+          "stage": stage_id
+        }),
+        'Content-type': 'application/json',
+        success: function (res) {
+          window.location.replace("http://127.0.0.1:8000/")
+          
+
+        },
+        error: function (err) {
+          console.log(err);
+          console.log("bu erororoo");
+        }
+      })
+      console.log(answers)
+    })
+  })
+
+
+
+</script>

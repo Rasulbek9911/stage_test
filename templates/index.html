@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="{% static '/css/style.css' %}" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container-fluid">
+        <br /><br />
+        <ul class="list-unstyled multi-steps">
+          
+            {% for stage in stages %}
+               {% if stage.id == results %}    
+                <li class="is-active"><a href="{% url 'test' stage.pk %}">{{stage.name}}</a></li>
+                {% else %}
+                <li><a >{{stage.name}}</a></li>
+                {% endif %}
+            {% endfor %}
+          
+        </ul>
+        {% if diplom == 'diplom' %}
+        <H2><a href="{% url 'print' %}">Diplomni olish</a></H2>
+        {% endif %}
+    </div>
+</body>
+
+</html>
